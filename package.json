@@ -4,7 +4,7 @@
   "description": "WordPress Coding Standards in NodeJS",
   "main": "index.js",
   "scripts": {
-    "test": "xo && --ava"
+    "test": "xo && ava --verbose"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,10 @@
   "xo": {
     "esnext": true,
     "space": true,
-    "semicolon": false
+    "semicolon": false,
+    "ignores": [
+      "**/phpcs/**",
+      "**/wordpress-coding-standards/**"
+    ]
   }
 }
