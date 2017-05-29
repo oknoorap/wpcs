@@ -1,6 +1,8 @@
 [submodule "phpcs"]
 	path = phpcs
 	url = https://github.com/squizlabs/PHP_CodeSniffer
+  branch = master
 [submodule "wordpress-coding-standards"]
 	path = wordpress-coding-standards
-	url = https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git
+	url = https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
+  branch = master
