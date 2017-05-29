@@ -1,0 +1,27 @@
+{
+  "name": "wpcs",
+  "version": "1.0.0",
+  "description": "WordPress Coding Standards in NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "xo && --ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oknoorap/wpcs.git"
+  },
+  "keywords": [
+    "wordpress",
+    "unit-test"
+  ],
+  "author": "Ribhararnus Pracutian <oknoorap@gmail.com> (https://www.oknoorap.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oknoorap/wpcs/issues"
+  },
+  "homepage": "https://github.com/oknoorap/wpcs#readme",
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "xo": "^0.18.2"
+  }
+}
