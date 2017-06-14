@@ -8,7 +8,8 @@ cache:
   yarn: true
 
 env:
-  - NODE_RELEASE=8.x
+  - NODE_RELEASE=6.x
+  - NOTE_RELEASE=7.x
 
 before_install:
   - sudo rm -rf ~/.nvm - curl -sL "https://deb.nodesource.com/setup_${NODE_RELEASE}" | sudo -E bash -
