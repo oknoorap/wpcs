@@ -21,8 +21,7 @@ const action = (args, options) => {
 
   const wpcs = new WPCS(dirpath, rule)
   const spinner = ora('Scanning Files')
-  const errors = {}
-  const warnings = {}
+  const logs = {}
 
   wpcs.on('start', () => {
     logger.blank()
@@ -34,22 +33,29 @@ const action = (args, options) => {
   })
 
   wpcs.on('error', (filename, info) => {
-    errors[filename] = info
+    logs[filename] = info
   })
 
   wpcs.on('warning', (filename, info) => {
-    warnings[filename] = info
+    logs[filename] = info
   })
 
   wpcs.on('done', totals => {
     if (totals.errors > 0 || totals.warnings > 0) {
       spinner.succeed(`Scanned ${totals.files} files.`)
 
-      for (const filename in errors) {
-        if (Object.prototype.hasOwnProperty.call(errors, filename)) {
+      for (const filename in logs) {
+        if (Object.prototype.hasOwnProperty.call(logs, filename)) {
           logger.blank()
           logger.tab(`${chalk.underline.white(filename)}`)
-          logger.error(errors[filename])
+          switch (logs[filename].type) {
+          case 'ERROR':
+            logger.error(logs[filename])
+            break
+          case 'WARNING':
+            logger.warning(logs[filename])
+            break
+          }
         }
       }
 
