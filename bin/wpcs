@@ -1,0 +1,80 @@
+#!/usr/bin/env node
+
+const program = require('caporal')
+const updateNotifier = require('update-notifier')
+const ora = require('ora')
+const chalk = require('chalk')
+const pkg = require('../package.json')
+const WPCS = require('../index')
+const logger = require('../lib/logger')
+
+const action = (args, options) => {
+  let dirpath = args.path
+  if (!dirpath) {
+    dirpath = process.cwd()
+  }
+
+  let rule = options.rule
+  if (!rule) {
+    rule = 'WordPress'
+  }
+
+  const wpcs = new WPCS(dirpath, rule)
+  const spinner = ora('Scanning Files')
+  const errors = {}
+  const warnings = {}
+
+  wpcs.on('start', () => {
+    logger.blank()
+    spinner.start()
+  })
+
+  wpcs.on('scan', filename => {
+    spinner.text = `Scanning ${filename}`
+  })
+
+  wpcs.on('error', (filename, info) => {
+    errors[filename] = info
+  })
+
+  wpcs.on('warning', (filename, info) => {
+    warnings[filename] = info
+  })
+
+  wpcs.on('done', totals => {
+    if (totals.errors > 0 || totals.warnings > 0) {
+      spinner.succeed(`Scanned ${totals.files} files.`)
+
+      for (const filename in errors) {
+        if (Object.prototype.hasOwnProperty.call(errors, filename)) {
+          logger.blank()
+          logger.tab(`${chalk.underline.white(filename)}`)
+          logger.error(errors[filename])
+        }
+      }
+
+      logger.blank()
+      logger.symbol(`You've got ${totals.errors} errors and ${totals.warnings} warnings.`, 'error')
+      logger.blank()
+      process.exit(1)
+    } else {
+      spinner.succeed('Done. No Error or Warning Found.')
+      logger.blank()
+    }
+  })
+}
+
+program
+  .version(pkg.version)
+  .description('Check WordPress Coding Standard')
+  .argument('[path]', 'Script path could be a directory or filename.')
+  .option('--rule <rulename>', 'Default rule is WordPress. WordPress | Wordpress-Core | Wordpress-Docs | WordPress-Extra', program.STRING)
+  .action(action)
+
+program.parse(process.argv)
+
+// Notify update, cached every hour
+updateNotifier({
+  pkg,
+  updateCheckInterval: 1000 * 60 * 60
+}).notify()
