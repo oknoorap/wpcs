@@ -29,8 +29,26 @@
     "space": true,
     "semicolon": false,
     "ignores": [
+      "**/test/test-theme/**",
       "**/phpcs/**",
       "**/wordpress-coding-standards/**"
     ]
+  },
+  "ava": {
+    "files": [
+      "test/test.js"
+    ]
+  },
+  "files": [
+    "index.js",
+    "cli.js",
+    "lib",
+    "phpcs",
+    "wordpress-coding-standards"
+  ],
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "globby": "^6.1.0",
+    "log-symbols": "^1.0.2"
   }
 }
