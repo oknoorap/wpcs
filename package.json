@@ -41,6 +41,7 @@
   },
   "files": [
     "index.js",
+    "bin",
     "cli.js",
     "lib",
     "phpcs",
