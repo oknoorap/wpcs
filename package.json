@@ -47,8 +47,11 @@
     "wordpress-coding-standards"
   ],
   "dependencies": {
+    "caporal": "^0.6.0",
     "chalk": "^1.1.3",
     "globby": "^6.1.0",
-    "log-symbols": "^1.0.2"
+    "log-symbols": "^1.0.2",
+    "ora": "^1.2.0",
+    "update-notifier": "^2.2.0"
   }
 }
