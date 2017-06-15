@@ -39,6 +39,9 @@
       "test/test.js"
     ]
   },
+  "bin":{
+    "wpcs": "bin/wpcs"
+  },
   "files": [
     "index.js",
     "bin",
