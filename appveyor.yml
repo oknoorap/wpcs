@@ -25,8 +25,6 @@ install:
   - ps: Install-Product node $env:nodejs_version
   # yarn supports
   - yarn install
-  - git submodule init
-  - git submodule update
 
 cache:
   - '%LOCALAPPDATA%\Composer\files -> composer.lock'
