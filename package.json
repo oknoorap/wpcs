@@ -1,6 +1,6 @@
 {
   "name": "wpcs",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "WordPress Coding Standards in NodeJS",
   "main": "index.js",
   "scripts": {
@@ -39,7 +39,7 @@
       "test/test.js"
     ]
   },
-  "bin":{
+  "bin": {
     "wpcs": "bin/wpcs"
   },
   "files": [
