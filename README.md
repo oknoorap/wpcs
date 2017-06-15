@@ -1,5 +1,5 @@
 <p align="center">
-  image_here
+  <img src="https://i.gyazo.com/e655bf900ae1693d6d98bcbb1d447d5c.gif" /> 
   <br />
   <br />
   WordPress Coding Standards Node.js
