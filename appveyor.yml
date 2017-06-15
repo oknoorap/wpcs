@@ -2,18 +2,42 @@
 environment:
   nodejs_version: "6"
 
+init:
+  - SET PATH=C:\Program Files\OpenSSL;c:\tools\php;%PATH%
+  - SET COMPOSER_NO_INTERACTION=1
+  - SET PHP=1
+
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
-  - cinst -y php
-  - SET PATH=C:\php\;%PATH%
+  # Install openssl
+  - cinst OpenSSL.Light > tmp\openssl-install.log
+  # Install php
+  - IF EXIST c:\tools\php (SET PHP=0)
+  - IF %PHP%==1 cinst --params '"/InstallDir:C:\tools\php"' -i -y php --version %php_ver_target% --force > tmp\php-install.log 2>&1
+  - IF %PHP%==1 cd c:\tools\php
+  - IF %PHP%==1 copy php.ini-production php.ini /Y
+  - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
+  - IF %PHP%==1 echo extension_dir=ext >> php.ini
+  - IF %PHP%==1 echo extension=php_openssl.dll >> php.ini
+  - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
+  - IF %PHP%==1 echo extension=php_fileinfo.dll >> php.ini
+  # Install composer
+  - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
+  - IF NOT EXIST composer.phar (appveyor DownloadFile https://getcomposer.org/download/1.4.2/composer.phar)
+  - composer self-update --no-progress --ansi
   # yarn supports
   - yarn install
 
 cache:
- - node_modules
- - "%LOCALAPPDATA%/Yarn"
+  - '%LOCALAPPDATA%\Composer\files -> composer.lock'
+  - composer.phar
+  - C:\ProgramData\chocolatey\bin -> .appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> .appveyor.yml
+  - c:\tools\php -> .appveyor.yml
+  - node_modules
+  - "%LOCALAPPDATA%/Yarn"
 
 # Post-install test scripts.
 test_script:
