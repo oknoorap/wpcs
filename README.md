@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.gyazo.com/ae23f834385276ae51e1b81000e883ff.gif" /> 
+  <img src="https://i.gyazo.com/e655bf900ae1693d6d98bcbb1d447d5c.gif" /> 
   <br />
   <br />
   WordPress Coding Standards Node.js
