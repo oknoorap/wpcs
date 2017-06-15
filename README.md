@@ -1,9 +1,4 @@
-<p align="center">
-  <img src="https://i.gyazo.com/e655bf900ae1693d6d98bcbb1d447d5c.gif" /> 
-  <br />
-  <br />
-  WordPress Coding Standards Node.js
-</p>
+# Check WordPress Coding Standards in Node.js
 
 ## :computer: Install 
 With NPM
@@ -49,6 +44,9 @@ wpcs.on('done', totals => {
 ```
 
 ## :zap: CLI
+
+[![https://gyazo.com/e655bf900ae1693d6d98bcbb1d447d5c](https://i.gyazo.com/e655bf900ae1693d6d98bcbb1d447d5c.gif)](https://gyazo.com/e655bf900ae1693d6d98bcbb1d447d5c)
+
 ```bash
 USAGE
   wpcs [path]
