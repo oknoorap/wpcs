@@ -31,9 +31,9 @@ const checkFooter = () => checkError('footer.php')
 
 const checkContentPage = () => checkError('template-parts/content-page.php')
 
-test('theme have more than 1 error', async t => {
+test('total scanned are 20 files', async t => {
   await checkTotal().then(totals => {
-    t.true(totals.errors > 1)
+    t.is(totals.files, 20)
   })
 })
 
