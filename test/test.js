@@ -63,7 +63,7 @@ test('footer.php has no error', async t => {
 
 test('template-parts/content-page.php error: textdomain arg should be single a string literal, not variable.', async t => {
   await checkContentPage().then(errors => {
-    t.is(errors[0].message, 'The $domain arg should be single a string literal, not "$test".')
+    t.is(errors[0].message, 'The $domain arg must be a single string literal, not "$test".')
   })
 })
 
