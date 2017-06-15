@@ -30,8 +30,7 @@
     "semicolon": false,
     "ignores": [
       "**/test/test-theme/**",
-      "**/phpcs/**",
-      "**/wordpress-coding-standards/**"
+      "**/scripts/**"
     ]
   },
   "ava": {
@@ -44,11 +43,10 @@
   },
   "files": [
     "index.js",
-    "bin",
     "cli.js",
+    "bin",
     "lib",
-    "phpcs",
-    "wordpress-coding-standards"
+    "scripts"
   ],
   "dependencies": {
     "caporal": "^0.6.0",
