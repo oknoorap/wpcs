@@ -20,7 +20,7 @@ install:
   - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
   - IF %PHP%==1 echo extension=php_fileinfo.dll >> php.ini
   - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
-
+  - cd %APPVEYOR_BUILD_FOLDER%
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
   # yarn supports
