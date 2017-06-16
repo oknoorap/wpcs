@@ -7,13 +7,14 @@ $ npm install wpcs --save
 ```
 With Yarn
 ```bash
-$ yarn install
+$ yarn add wpcs
 ```
 
 If you want to install as CLI tool, you should install it globally.
 
 ```bash
 $ npm install wpcs -g
+$ yarn global add wpcs
 ```
 
 ## :books: Usage Example as Module
