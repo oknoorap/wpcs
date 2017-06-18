@@ -53,6 +53,11 @@ wpcs.on('warning', (filename, info) => {
 wpcs.on('done', totals => {
   // {errors: Number, warnings: Numbers, files: Numbers}
 })
+
+// Get error process
+wpcs.process.on('error', err => {
+  console.log(err)
+})
 ```
 
 ## :zap: CLI
