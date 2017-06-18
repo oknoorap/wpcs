@@ -29,7 +29,9 @@ const action = (args, options) => {
   })
 
   wpcs.on('scan', filename => {
-    spinner.text = `Scanning ${filename}`
+    if (filename) {
+      spinner.text = `Scanning ${filename}`
+    }
   })
 
   wpcs.on('error', (filename, info) => {
@@ -62,11 +64,32 @@ const action = (args, options) => {
       logger.blank()
       logger.symbol(`You've got ${totals.errors} errors and ${totals.warnings} warnings.`, 'error')
       logger.blank()
-      process.exit(1)
+      if (!options.autofix) {
+        process.exit(1)
+      }
+
+      if (options.autofix) {
+        wpcs.fix()
+      }
     } else {
       spinner.succeed('Done. No Error or Warning Found.')
       logger.blank()
+      process.exit()
     }
+  })
+
+  const fixspinner = ora('Fixing Violations')
+  wpcs.on('fix', () => {
+    logger.blank()
+    fixspinner.start()
+  })
+
+  wpcs.on('fixing', filename => {
+    fixspinner.text = `Fixing ${filename}`
+  })
+
+  wpcs.on('fixed', files => {
+    fixspinner.succeed(`${files.length} files has been fixed.`)
   })
 }
 
@@ -74,7 +97,8 @@ program
   .version(pkg.version)
   .description('Check WordPress Coding Standard')
   .argument('[path]', 'Script path could be a directory or filename.')
-  .option('--rule <rulename>', 'Default rule is WordPress. WordPress | Wordpress-Core | Wordpress-Docs | WordPress-Extra', program.STRING)
+  .option('--rule <rulename>', 'Default rule is WordPress. WordPress | Wordpress-Core | Wordpress-Docs | WordPress-Extra.', program.STRING)
+  .option('--autofix', 'Auto fix errors.', program.BOOLEAN)
   .action(action)
 
 program.parse(process.argv)
