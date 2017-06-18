@@ -1,21 +1,32 @@
-# Check WordPress Coding Standards in Node.js
+# :page_with_curl: wpcs
+> Check WordPress Coding Standards quickly with Node.js without installing any PHP dependencies.
 
 ## :computer: Install 
-With NPM
+Using NPM  
 ```bash
 $ npm install wpcs --save
 ```
-With Yarn
+
+Using Yarn
 ```bash
 $ yarn add wpcs
 ```
 
-If you want to install as CLI tool, you should install it globally.
+If you want to use CLI version, please install it globally.
 
 ```bash
+# NPM
 $ npm install wpcs -g
+
+# Yarn
 $ yarn global add wpcs
 ```
+
+## :elephant: PHP Scripts
+This module depends with these scripts below. By using `git subtree` method under `scripts` directory.
+
+* [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer)
+* [Wordpress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
 
 ## :books: Usage Example as Module
 ```javascript
@@ -49,14 +60,16 @@ wpcs.on('done', totals => {
 [![https://gyazo.com/e655bf900ae1693d6d98bcbb1d447d5c](https://i.gyazo.com/e655bf900ae1693d6d98bcbb1d447d5c.gif)](https://gyazo.com/e655bf900ae1693d6d98bcbb1d447d5c)
 
 ```bash
-USAGE
-  wpcs [path]
+wpcs - Check WordPress Coding Standard
 
-ARGUMENTS
-  [path]  Script path could be a directory or filename (optional)   
+  USAGE
+    wpcs [path]
 
-OPTIONS
-  --rule <rulename> Default rule is WordPress. WordPress | Wordpress-Core | Wordpress-Docs | WordPress-Extra (optional)
+  ARGUMENTS
+    [path]    Script path could be a directory or filename (optional)   
+
+  OPTIONS
+    --rule <rulename>    Default rule is WordPress. WordPress | Wordpress-Core | Wordpress-Docs | WordPress-Extra (optional)
 ```
 
 ## License
