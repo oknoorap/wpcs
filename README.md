@@ -71,10 +71,12 @@ wpcs - Check WordPress Coding Standard
     wpcs [path]
 
   ARGUMENTS
-    [path]    Script path could be a directory or filename (optional)   
+    [path]    Script path could be a directory or filename. optional
 
   OPTIONS
-    --rule <rulename>    Default rule is WordPress. WordPress | Wordpress-Core | Wordpress-Docs | WordPress-Extra (optional)
+    --rule <rulename>    Default rule is WordPress. WordPress | Wordpress-Core | Wordpress-Docs | WordPress-Extra. optional
+
+    --autofix    Auto fix errors. optional
 ```
 
 ## License
