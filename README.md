@@ -23,7 +23,7 @@ $ yarn global add wpcs
 ```
 
 ## :elephant: PHP Scripts
-This module depends with these scripts below. By using `git subtree` method under `scripts` directory.
+This module depends on these scripts below, using `git subtree` method under `scripts` directory.
 
 * [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer)
 * [Wordpress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
