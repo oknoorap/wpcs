@@ -34,13 +34,18 @@ const action = (args, options) => {
     }
   })
 
-  wpcs.on('error', (filename, info) => {
-    logs[filename] = info
-  })
+  const addToLog = (filename, info) => {
+    if (!logs[filename]) {
+      logs[filename] = []
+    }
+    logs[filename].push(info)
+  }
 
-  wpcs.on('warning', (filename, info) => {
-    logs[filename] = info
-  })
+  wpcs.on('error', addToLog)
+
+  if (!options.skipWarning) {
+    wpcs.on('warning', addToLog)
+  }
 
   wpcs.on('done', totals => {
     if (totals.errors > 0 || totals.warnings > 0) {
@@ -50,14 +55,16 @@ const action = (args, options) => {
         if (Object.prototype.hasOwnProperty.call(logs, filename)) {
           logger.blank()
           logger.tab(`${chalk.underline.white(filename)}`)
-          switch (logs[filename].type) {
-          case 'ERROR':
-            logger.error(logs[filename])
-            break
-          case 'WARNING':
-            logger.warning(logs[filename])
-            break
-          }
+          logs[filename].forEach(item => {
+            switch (item.type) {
+              case 'ERROR':
+                logger.error(item)
+                break
+              case 'WARNING':
+                logger.warning(item)
+                break
+            }
+          })
         }
       }
 
@@ -99,6 +106,7 @@ program
   .argument('[path]', 'Script path could be a directory or filename.')
   .option('--rule <rulename>', 'Default rule is WordPress. WordPress | Wordpress-Core | Wordpress-Docs | WordPress-Extra.', program.STRING)
   .option('--autofix', 'Auto fix errors.', program.BOOLEAN)
+  .option('--skip-warning', 'Skip Warning.', program.BOOLEAN)
   .action(action)
 
 program.parse(process.argv)
