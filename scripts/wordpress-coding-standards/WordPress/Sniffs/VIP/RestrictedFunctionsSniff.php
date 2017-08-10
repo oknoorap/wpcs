@@ -7,6 +7,10 @@
  * @license https://opensource.org/licenses/MIT MIT
  */
 
+namespace WordPress\Sniffs\VIP;
+
+use WordPress\AbstractFunctionRestrictionsSniff;
+
 /**
  * Restricts usage of some functions in VIP context.
  *
@@ -24,8 +28,9 @@
  *                 The check for `parse_url()` and `curl_*` have been moved to the stand-alone sniff
  *                 WordPress_Sniffs_WP_AlternativeFunctionsSniff.
  *                 The check for `eval()` now defers to the upstream Squiz.PHP.Eval sniff.
+ * @since   0.13.0 Class name changed: this class is now namespaced.
  */
-class WordPress_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_AbstractFunctionRestrictionsSniff {
+class RestrictedFunctionsSniff extends AbstractFunctionRestrictionsSniff {
 
 	/**
 	 * Groups of functions to restrict.
@@ -165,17 +170,6 @@ class WordPress_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_AbstractFu
 					'get_posts',
 					'wp_get_recent_posts',
 					'get_children',
-				),
-			),
-
-			'wp_get_post_terms' => array(
-				'type'      => 'error',
-				'message'   => '%s() is highly discouraged due to not being cached; please use get_the_terms() along with wp_list_pluck() to extract the IDs.',
-				'functions' => array(
-					'wp_get_post_terms',
-					'wp_get_post_categories',
-					'wp_get_post_tags',
-					'wp_get_object_terms',
 				),
 			),
 

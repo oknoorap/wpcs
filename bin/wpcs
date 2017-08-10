@@ -8,6 +8,18 @@ const pkg = require('../package.json')
 const WPCS = require('../index')
 const logger = require('../lib/logger')
 
+const simpleDotsLoader = {
+  interval: 70,
+  frames: [
+    '.  ',
+    '.. ',
+    ' ..',
+    ' ..',
+    '  .',
+    '   '
+  ]
+}
+
 const action = (args, options) => {
   let dirpath = args.path
   if (!dirpath) {
@@ -19,25 +31,33 @@ const action = (args, options) => {
     rule = 'WordPress'
   }
 
+  let spinner
   const wpcs = new WPCS(dirpath, rule)
-  const spinner = ora('Scanning Files')
   const logs = {}
+
+  wpcs.process.on('error', err => {
+    logger.blank()
+    logger.blank()
+    logger.tab(`${chalk.underline.white('Error')}: `)
+    logger.error2(err)
+    logger.blank()
+  })
 
   wpcs.on('start', () => {
     logger.blank()
-    spinner.start()
+    spinner = ora('Scanning Files').start()
+    spinner.spinner = simpleDotsLoader
   })
 
   wpcs.on('scan', filename => {
-    if (filename) {
-      spinner.text = `Scanning ${filename}`
-    }
+    spinner.text = filename ? `Scanning ${filename}` : 'Working...'
   })
 
   const addToLog = (filename, info) => {
     if (!logs[filename]) {
       logs[filename] = []
     }
+
     logs[filename].push(info)
   }
 
@@ -68,8 +88,14 @@ const action = (args, options) => {
         }
       }
 
+      let hasFixableFiles = ''
+      if (totals.fixables > 0) {
+        const singplural = totals.fixables > 1 ? 's are' : ' is'
+        hasFixableFiles = `Good news, ${chalk.underline.green(totals.fixables)} file${singplural} fixable.`
+      }
+
       logger.blank()
-      logger.symbol(`You've got ${totals.errors} errors and ${totals.warnings} warnings.`, 'error')
+      logger.symbol(`You've got ${chalk.underline.white(totals.errors)} errors and ${chalk.underline.white(totals.warnings)} warnings. ${hasFixableFiles}`, 'error')
       logger.blank()
       if (!options.autofix) {
         process.exit(1)
@@ -85,18 +111,22 @@ const action = (args, options) => {
     }
   })
 
-  const fixspinner = ora('Fixing Violations')
+  let fixloader
+
   wpcs.on('fix', () => {
     logger.blank()
-    fixspinner.start()
+    fixloader = ora('Fixing Violations').start()
+    fixloader.spinner = simpleDotsLoader
   })
 
   wpcs.on('fixing', filename => {
-    fixspinner.text = `Fixing ${filename}`
+    fixloader.text = `Fixing ${filename}`
   })
 
   wpcs.on('fixed', files => {
-    fixspinner.succeed(`${files.length} files has been fixed.`)
+    const fixedMsg = (files.length > 0) ? `${files.length} files has been fixed.` : 'Nothing Fixed.'
+    fixloader.succeed(fixedMsg)
+    logger.blank()
   })
 }
 
