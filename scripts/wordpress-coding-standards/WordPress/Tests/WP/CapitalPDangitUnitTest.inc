@@ -171,3 +171,12 @@ echo 'This is an explanation about wordpress.'; // WPCS: spelling ok.
  */
 ?>
 <p class="wordpress" href="http://x.org/?something=wordpress">The first two should be ignored for the purpose of replacing, this wordpress however should be fixed and this wordpress too.</p><!-- Bad. -->
+
+<?php // POT filename should be ignored. ?>
+wordpress.pot
+
+<?php
+// Bad.
+$text = <<<'EOD'
+This is an explanation about word-press.
+EOD;
