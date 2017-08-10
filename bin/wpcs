@@ -124,7 +124,9 @@ const action = (args, options) => {
   })
 
   wpcs.on('fixed', files => {
-    fixloader.succeed(`${files.length} files has been fixed.`)
+    const fixedMsg = (files.length > 0) ? `${files.length} files has been fixed.` : 'Nothing Fixed.'
+    fixloader.succeed(fixedMsg)
+    logger.blank()
   })
 }
 
