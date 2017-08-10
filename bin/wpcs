@@ -88,8 +88,14 @@ const action = (args, options) => {
         }
       }
 
+      let hasFixableFiles = ''
+      if (totals.fixables > 0) {
+        const singplural = totals.fixables > 1 ? 's are' : ' is'
+        hasFixableFiles = `Good news, ${chalk.underline.green(totals.fixables)} file${singplural} fixable.`
+      }
+
       logger.blank()
-      logger.symbol(`You've got ${totals.errors} errors and ${totals.warnings} warnings.`, 'error')
+      logger.symbol(`You've got ${chalk.underline.white(totals.errors)} errors and ${chalk.underline.white(totals.warnings)} warnings. ${hasFixableFiles}`, 'error')
       logger.blank()
       if (!options.autofix) {
         process.exit(1)
