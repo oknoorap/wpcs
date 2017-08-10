@@ -8,6 +8,18 @@ const pkg = require('../package.json')
 const WPCS = require('../index')
 const logger = require('../lib/logger')
 
+const simpleDotsLoader = {
+  interval: 70,
+  frames: [
+    '.  ',
+    '.. ',
+    ' ..',
+    ' ..',
+    '  .',
+    '   '
+  ]
+}
+
 const action = (args, options) => {
   let dirpath = args.path
   if (!dirpath) {
@@ -19,25 +31,33 @@ const action = (args, options) => {
     rule = 'WordPress'
   }
 
+  let spinner
   const wpcs = new WPCS(dirpath, rule)
-  const spinner = ora('Scanning Files')
   const logs = {}
+
+  wpcs.process.on('error', err => {
+    logger.blank()
+    logger.blank()
+    logger.tab(`${chalk.underline.white('Error')}: `)
+    logger.error2(err)
+    logger.blank()
+  })
 
   wpcs.on('start', () => {
     logger.blank()
-    spinner.start()
+    spinner = ora('Scanning Files').start()
+    spinner.spinner = simpleDotsLoader
   })
 
   wpcs.on('scan', filename => {
-    if (filename) {
-      spinner.text = `Scanning ${filename}`
-    }
+    spinner.text = filename ? `Scanning ${filename}` : 'Working...'
   })
 
   const addToLog = (filename, info) => {
     if (!logs[filename]) {
       logs[filename] = []
     }
+
     logs[filename].push(info)
   }
 
@@ -85,18 +105,20 @@ const action = (args, options) => {
     }
   })
 
-  const fixspinner = ora('Fixing Violations')
+  let fixloader
+
   wpcs.on('fix', () => {
     logger.blank()
-    fixspinner.start()
+    fixloader = ora('Fixing Violations').start()
+    fixloader.spinner = simpleDotsLoader
   })
 
   wpcs.on('fixing', filename => {
-    fixspinner.text = `Fixing ${filename}`
+    fixloader.text = `Fixing ${filename}`
   })
 
   wpcs.on('fixed', files => {
-    fixspinner.succeed(`${files.length} files has been fixed.`)
+    fixloader.succeed(`${files.length} files has been fixed.`)
   })
 }
 
