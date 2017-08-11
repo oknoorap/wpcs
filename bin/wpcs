@@ -7,6 +7,7 @@ const chalk = require('chalk')
 const pkg = require('../package.json')
 const WPCS = require('../index')
 const logger = require('../lib/logger')
+const {rulesetList, rulesetTypes} = require('../lib/fixtures')
 
 const simpleDotsLoader = {
   interval: 70,
@@ -28,7 +29,7 @@ const action = (args, options) => {
 
   let rule = options.rule
   if (!rule) {
-    rule = 'WordPress'
+    rule = `${rulesetTypes.WORDPRESS_EXTRA},${rulesetTypes.WORDPRESS_DOCS}`
   }
 
   let spinner
@@ -134,7 +135,7 @@ program
   .version(pkg.version)
   .description('Check WordPress Coding Standard')
   .argument('[path]', 'Script path could be a directory or filename.')
-  .option('--rule <rulename>', 'Default rule is WordPress. WordPress | Wordpress-Core | Wordpress-Docs | WordPress-Extra.', program.STRING)
+  .option('--rule <rulename>', `Default rule is WordPress-Extra + WordPress-Docs. ${rulesetList.join(' | ')}.`, program.STRING)
   .option('--autofix', 'Auto fix errors.', program.BOOLEAN)
   .option('--skip-warning', 'Skip Warning.', program.BOOLEAN)
   .action(action)
