@@ -7,6 +7,7 @@ const chalk = require('chalk')
 const pkg = require('../package.json')
 const WPCS = require('../index')
 const logger = require('../lib/logger')
+const {rulesetTypes} = require('../lib/fixtures')
 
 const simpleDotsLoader = {
   interval: 70,
@@ -28,7 +29,7 @@ const action = (args, options) => {
 
   let rule = options.rule
   if (!rule) {
-    rule = 'WordPress'
+    rule = `${rulesetTypes.WORDPRESS_EXTRA},${rulesetTypes.WORDPRESS_DOCS}`
   }
 
   let spinner
