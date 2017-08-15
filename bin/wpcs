@@ -69,7 +69,7 @@ const action = (args, options) => {
   }
 
   wpcs.on('done', totals => {
-    if (totals.errors > 0 || totals.warnings > 0) {
+    if (totals.errors > 0 || (totals.warnings > 0 && !options.skipWarning)) {
       spinner.succeed(`Scanned ${totals.files} files.`)
 
       for (const filename in logs) {
@@ -89,14 +89,19 @@ const action = (args, options) => {
         }
       }
 
-      let hasFixableFiles = ''
+      let hasFixableCodes = ''
       if (totals.fixables > 0) {
         const singplural = totals.fixables > 1 ? 's are' : ' is'
-        hasFixableFiles = `Good news, ${chalk.underline.green(totals.fixables)} file${singplural} fixable.`
+        hasFixableCodes = `. Good news, ${chalk.underline.green(totals.fixables)} file${singplural} fixable.`
+      }
+
+      let warningsMsg = ''
+      if (options.skipWarning) {
+        warningsMsg = ` and ${chalk.underline.white(totals.warnings)} warnings`
       }
 
       logger.blank()
-      logger.symbol(`You've got ${chalk.underline.white(totals.errors)} errors and ${chalk.underline.white(totals.warnings)} warnings. ${hasFixableFiles}`, 'error')
+      logger.symbol(`You've got ${chalk.underline.white(totals.errors)} errors${warningsMsg}${hasFixableCodes}`, 'error')
       logger.blank()
       if (!options.autofix) {
         process.exit(1)
