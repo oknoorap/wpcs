@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const path = require('path')
 const program = require('caporal')
 const updateNotifier = require('update-notifier')
 const ora = require('ora')
@@ -33,7 +34,14 @@ const action = (args, options) => {
   }
 
   let spinner
-  const wpcs = new WPCS(dirpath, rule)
+  const excludes = options.excludes.split(',').map(item => {
+    item = item.trim()
+    if (!path.extname(item)) {
+      item += '/**'
+    }
+    return `**/${item}`
+  })
+  const wpcs = new WPCS(dirpath, rule, excludes)
   const logs = {}
 
   wpcs.process.on('error', err => {
@@ -143,6 +151,7 @@ program
   .option('--rule <rulename>', `Default rule is WordPress-Extra + WordPress-Docs. ${rulesetList.join(' | ')}.`, program.STRING)
   .option('--autofix', 'Auto fix errors.', program.BOOLEAN)
   .option('--skip-warning', 'Skip Warning.', program.BOOLEAN)
+  .option('--excludes', 'Ignore paths, separated by commas.', program.STRING)
   .action(action)
 
 program.parse(process.argv)
