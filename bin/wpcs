@@ -33,14 +33,18 @@ const action = (args, options) => {
     rule = `${rulesetTypes.WORDPRESS_EXTRA},${rulesetTypes.WORDPRESS_DOCS}`
   }
 
+  let excludes = []
+  if (options.excludes) {
+    excludes = options.excludes.split(',').map(item => {
+      item = item.trim()
+      if (!path.extname(item)) {
+        item += '/**'
+      }
+      return `**/${item}`
+    })
+  }
+
   let spinner
-  const excludes = options.excludes.split(',').map(item => {
-    item = item.trim()
-    if (!path.extname(item)) {
-      item += '/**'
-    }
-    return `**/${item}`
-  })
   const wpcs = new WPCS(dirpath, rule, excludes)
   const logs = {}
 
