@@ -57,13 +57,17 @@ const action = (args, options) => {
   })
 
   wpcs.on('start', () => {
-    logger.blank()
-    spinner = ora('Scanning Files').start()
-    spinner.spinner = simpleDotsLoader
+    if (!options.json) {
+      logger.blank()
+      spinner = ora('Scanning Files').start()
+      spinner.spinner = simpleDotsLoader
+    }
   })
 
   wpcs.on('scan', filename => {
-    spinner.text = filename ? `Scanning ${filename}` : 'Working...'
+    if (!options.json) {
+      spinner.text = filename ? `Scanning ${filename}` : 'Working...'
+    }
   })
 
   const addToLog = (filename, info) => {
@@ -81,6 +85,11 @@ const action = (args, options) => {
   }
 
   wpcs.on('done', totals => {
+    if (options.json) {
+      logger.log(logs)
+      process.exit()
+    }
+
     if (totals.errors > 0 || (totals.warnings > 0 && !options.skipWarning)) {
       spinner.succeed(`Scanned ${totals.files} files.`)
 
@@ -156,6 +165,7 @@ program
   .option('--autofix', 'Auto fix errors.', program.BOOLEAN)
   .option('--skip-warning', 'Skip Warning.', program.BOOLEAN)
   .option('--excludes', 'Ignore paths, separated by commas.', program.STRING)
+  .option('--json', 'Print output in JSON format', program.BOOLEAN)
   .action(action)
 
 program.parse(process.argv)
