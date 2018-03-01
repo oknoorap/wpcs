@@ -86,7 +86,7 @@ const action = (args, options) => {
 
   wpcs.on('done', totals => {
     if (options.json) {
-      logger.log(logs)
+      logger.json(logs)
       process.exit()
     }
 
