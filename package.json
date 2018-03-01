@@ -4,7 +4,9 @@
   "description": "WordPress Coding Standards in NodeJS",
   "main": "index.js",
   "scripts": {
-    "test": "xo && ava --verbose"
+    "test": "xo && ava --verbose",
+    "pull-wpcs": "git subtree pull --prefix scripts/wordpress-coding-standards https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git master --squash",
+    "update-script": "yarn pull-wpcs"
   },
   "repository": {
     "type": "git",
