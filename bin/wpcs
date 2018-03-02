@@ -124,7 +124,7 @@ const action = (args, options) => {
       }
 
       let warningsMsg = ''
-      if (options.skipWarning) {
+      if (!options.skipWarning) {
         warningsMsg = ` and ${chalk.underline.white(totals.warnings)} warnings`
       }
 
