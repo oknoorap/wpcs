@@ -1,6 +1,6 @@
 {
   "name": "wpcs",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "WordPress Coding Standards in NodeJS",
   "main": "index.js",
   "scripts": {
