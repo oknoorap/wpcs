@@ -85,12 +85,19 @@ const action = (args, options) => {
   }
 
   wpcs.on('done', totals => {
+    const hasViolations = totals.errors > 0 || (totals.warnings > 0 && !options.skipWarning)
+
     if (options.json) {
       logger.json(logs)
-      process.exit()
+
+      if (hasViolations) {
+        process.exit(1)
+      } else {
+        process.exit()
+      }
     }
 
-    if (totals.errors > 0 || (totals.warnings > 0 && !options.skipWarning)) {
+    if (hasViolations) {
       spinner.succeed(`Scanned ${totals.files} files.`)
 
       for (const filename in logs) {
