@@ -88,6 +88,11 @@ const action = (args, options) => {
     const hasViolations = totals.errors > 0 || (totals.warnings > 0 && !options.skipWarning)
 
     if (options.json) {
+      if (options.autofix) {
+        wpcs.fix()
+        return
+      }
+
       logger.json(logs)
 
       if (hasViolations) {
@@ -131,6 +136,7 @@ const action = (args, options) => {
       logger.blank()
       logger.symbol(`You've got ${chalk.underline.white(totals.errors)} errors${warningsMsg}${hasFixableCodes}`, 'error')
       logger.blank()
+
       if (!options.autofix) {
         process.exit(1)
       }
@@ -148,19 +154,30 @@ const action = (args, options) => {
   let fixloader
 
   wpcs.on('fix', () => {
-    logger.blank()
-    fixloader = ora('Fixing Violations').start()
-    fixloader.spinner = simpleDotsLoader
+    if (!options.json) {
+      logger.blank()
+      fixloader = ora('Fixing Violations').start()
+      fixloader.spinner = simpleDotsLoader
+    }
   })
 
   wpcs.on('fixing', filename => {
-    fixloader.text = `Fixing ${filename}`
+    if (!options.json) {
+      fixloader.text = `Fixing ${filename}`
+    }
   })
 
   wpcs.on('fixed', files => {
     const fixedMsg = (files.length > 0) ? `${files.length} files has been fixed.` : 'Nothing Fixed.'
-    fixloader.succeed(fixedMsg)
-    logger.blank()
+
+    if (options.json) {
+      logger.json({
+        message: fixedMsg
+      })
+    } else {
+      fixloader.succeed(fixedMsg)
+      logger.blank()
+    }
   })
 }
 
