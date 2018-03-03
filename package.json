@@ -45,7 +45,6 @@
   },
   "files": [
     "index.js",
-    "cli.js",
     "bin",
     "lib",
     "scripts"
